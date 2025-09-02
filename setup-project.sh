@@ -89,8 +89,10 @@ cat > .prettierrc << 'EOF'
 }
 EOF
 
-# VSCode settings
+# VSCode configuration
 mkdir -p .vscode
+
+# VSCode settings
 cat > .vscode/settings.json << 'EOF'
 {
   "editor.formatOnSave": true,
@@ -101,6 +103,73 @@ cat > .vscode/settings.json << 'EOF'
   "emmet.includeLanguages": {
     "astro": "html"
   }
+}
+EOF
+
+# VSCode extensions
+cat > .vscode/extensions.json << 'EOF'
+{
+  "recommendations": [
+    "astro-build.astro-vscode",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next"
+  ],
+  "unwantedRecommendations": []
+}
+EOF
+
+# VSCode tasks
+cat > .vscode/tasks.json << 'EOF'
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install Dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Astro Dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Setup and Start Dev",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Install Dependencies",
+        "Astro Dev"
+      ],
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
+EOF
+
+# VSCode launch configuration
+cat > .vscode/launch.json << 'EOF'
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "command": "./node_modules/.bin/astro dev",
+      "name": "Development server",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
 }
 EOF
 
