@@ -26,8 +26,21 @@ if [ $# -eq 0 ]; then
 fi
 
 PROJECT_NAME=$1
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CURRENT_DIR="$(pwd)"
+
+# Detectar si estamos en Projects/Astro o en SetupNewProject
+if [[ "$CURRENT_DIR" == *"/Projects/Astro" ]]; then
+    PROJECTS_DIR="$CURRENT_DIR"
+else
+    PROJECTS_DIR="$(dirname "$SCRIPT_DIR")"
+fi
 
 log "🚀 Iniciando setup para: $PROJECT_NAME"
+log "📁 Creando en: $PROJECTS_DIR/$PROJECT_NAME"
+
+# Navegar al directorio de proyectos
+cd "$PROJECTS_DIR"
 
 # 1. Crear proyecto base
 log "📦 Creando proyecto Astro..."
@@ -493,7 +506,7 @@ const projectName = '$PROJECT_NAME';
 EOF
 
 log "✅ Setup completado para: $PROJECT_NAME"
-info "📂 Estructura creada exitosamente"
+info "📂 Proyecto creado en: $PROJECTS_DIR/$PROJECT_NAME"
 echo ""
 warn "🔧 Siguientes pasos:"
 echo -e "${BLUE}   cd $PROJECT_NAME${NC}"
